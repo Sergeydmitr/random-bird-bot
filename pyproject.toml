@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "random-bird-bot"
+version = "0.1.0"
+description = ""
+authors = ["Sergey <sergeydmitr@jabablog.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pydantic = "^2.11.4"
+pydantic-settings = "^2.9.1"
+aiogram = "^3.20.0.post0"
+aiohttp = {extras = ["speedups"], version = "^3.11.18"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

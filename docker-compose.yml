@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  bird-bot:
+    image: bird-bot
+    container_name: bird-bot
+    build:
+      context: .
+    env_file:
+      - .env
+    restart: unless-stopped
+  
