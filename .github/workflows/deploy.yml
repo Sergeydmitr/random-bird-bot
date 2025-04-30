@@ -23,12 +23,15 @@ jobs:
       # Копировать файлы на сервер
       - name: Copy files to server
         run: |
-          rsync -avz -e "ssh -o StrictHostKeyChecking=no" ./docker-compose.yml ./Dockerfile ./.dockerignore ./.env.example /src ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/deploy/app/
+          rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" \
+          ./docker-compose.yml ./Dockerfile ./.dockerignore ./.env.example ./src \
+          ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/deploy/app/
 
       # Выполнить деплой на сервере
       - name: Deploy application
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+          set -e
           cd /home/deploy/app
           docker-compose pull
           docker-compose up -d --build
