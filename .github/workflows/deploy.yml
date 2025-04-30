@@ -23,7 +23,7 @@ jobs:
       # Копировать файлы на сервер
       - name: Copy files to server
         run: |
-          rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" \
+          rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ./pyproject.toml ./poetry.lock\
           ./docker-compose.yml ./Dockerfile ./.dockerignore ./.env.example ./src \
           ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/deploy/app/
 
