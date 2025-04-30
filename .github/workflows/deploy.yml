@@ -23,7 +23,7 @@ jobs:
       # Копировать файлы на сервер
       - name: Copy files to server
         run: |
-          rsync -avz -e "ssh -o StrictHostKeyChecking=no" ./docker-compose.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/deploy/app/
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no" ./docker-compose.yml ./Dockerfile ./.dockerignore ./.env.example /src ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/deploy/app/
 
       # Выполнить деплой на сервере
       - name: Deploy application
