@@ -62,7 +62,7 @@ async def main() -> None:
     bot = Bot(token=settings.api_token, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 
     scheduler = AsyncIOScheduler()
-    scheduler.add_job(send_daily_bird_photos, "interval", seconds=20, args=[bot])  # Рассылка в 9 утра
+    scheduler.add_job(send_daily_bird_photos, "cron", hour=13, args=[bot])  # Рассылка в 9 утра
     scheduler.start()
     logger.info("Планировщик запущен.")
 
