@@ -12,6 +12,7 @@ async def get_random_bird_image(bird_type: str) -> str | None:
     params = {
         "query": bird_type,
         "client_id": settings.unsplash_api_key,
+        "topics": "animals",
     }
     try:
         async with aiohttp.ClientSession() as session:
