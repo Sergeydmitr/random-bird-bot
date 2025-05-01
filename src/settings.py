@@ -8,6 +8,8 @@ class Settings(BaseSettings):
     api_token: str
     admin_id: str
     unsplash_api_key: str
+    mongo_uri: str
+    mongo_db_name: str
 
 
 settings = Settings()
