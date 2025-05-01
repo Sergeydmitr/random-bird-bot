@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     unsplash_api_key: str
     mongo_uri: str
     mongo_db_name: str
+    timezone: str = "Europe/Moscow"
 
 
 settings = Settings()
