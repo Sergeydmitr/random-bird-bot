@@ -21,4 +21,3 @@ services:
       - MONGO_INITDB_DATABASE=${MONGO_DB_NAME}
     volumes:
       - ./data:/data/db
-    user: "1000:1000"
