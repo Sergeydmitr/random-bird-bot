@@ -5,16 +5,20 @@ import sys
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
+from aiogram.exceptions import TelegramForbiddenError
 from aiogram.filters import CommandStart
 from aiogram.types import Message
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-from src.utils import get_random_bird_image
+from src.db import add_subscriber, get_all_subscribers, init_db, remove_subscriber
 from src.settings import settings
-from src.db import add_subscriber, get_all_subscribers, remove_subscriber, init_db
+from src.utils import get_random_bird_image
 
-
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s", stream=sys.stdout)
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    stream=sys.stdout,
+)
 logger = logging.getLogger(__name__)
 
 dp = Dispatcher()
@@ -46,23 +50,28 @@ async def send_daily_bird_photos(bot: Bot) -> None:
             await bot.send_photo(
                 chat_id=subscriber.chat_id,
                 photo=image_url,
-                caption=f"Ежедневная фотография овсянки",
+                caption="Ежедневная фотография овсянки",
             )
             logger.info(f"Фото отправлено в чат {subscriber.chat_id}")
-        except Exception as e:
-            logger.error(f"Ошибка при отправке сообщения в чат {subscriber.chat_id}: {e}")
+
+        except TelegramForbiddenError as e:
+            logger.error(
+                f"Ошибка при отправке сообщения в чат {subscriber.chat_id}: {e}"
+            )
             # Удаляем подписчика, если отправка не удалась (например, пользователь заблокировал бота)
-            if "blocked" in str(e).lower():
-                await remove_subscriber(subscriber.chat_id)
+            await remove_subscriber(subscriber.chat_id)
 
 
 async def main() -> None:
     await init_db()
 
-    bot = Bot(token=settings.api_token, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+    bot = Bot(
+        token=settings.api_token,
+        default=DefaultBotProperties(parse_mode=ParseMode.HTML),
+    )
 
     scheduler = AsyncIOScheduler()
-    scheduler.add_job(send_daily_bird_photos, "cron", hour=13, args=[bot])  # Рассылка в 9 утра
+    scheduler.add_job(send_daily_bird_photos, "cron", hour=13, args=[bot])
     scheduler.start()
     logger.info("Планировщик запущен.")
 

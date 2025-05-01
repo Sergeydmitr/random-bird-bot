@@ -1,7 +1,9 @@
 import logging
-from src.models import Subscriber
+
 from beanie import init_beanie
 from motor.motor_asyncio import AsyncIOMotorClient
+
+from src.models import Subscriber
 from src.settings import settings
 
 logger = logging.getLogger(__name__)
@@ -9,7 +11,9 @@ logger = logging.getLogger(__name__)
 
 async def init_db() -> None:
     client = AsyncIOMotorClient(settings.mongo_uri)
-    await init_beanie(database=client[settings.mongo_db_name], document_models=[Subscriber])
+    await init_beanie(
+        database=client[settings.mongo_db_name], document_models=[Subscriber]
+    )
     logger.info("Подключение к базе данных MongoDB установлено.")
 
 

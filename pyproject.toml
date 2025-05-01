@@ -17,6 +17,11 @@ motor = "^3.7.0"
 pymongo = "^4.12.1"
 
 
+[tool.poetry.group.dev.dependencies]
+isort = "^6.0.1"
+ruff = "^0.11.7"
+mypy = "^1.15.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

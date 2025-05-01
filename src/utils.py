@@ -1,5 +1,7 @@
 import logging
+
 import aiohttp
+
 from src.settings import settings
 
 logging.basicConfig(level=logging.INFO)
@@ -18,7 +20,9 @@ async def get_random_bird_image(bird_type: str) -> str | None:
                     data = await response.json()
                     return data["urls"]["regular"]
                 else:
-                    logging.error(f"Ошибка при запросе к Unsplash API: {response.status}")
+                    logging.error(
+                        f"Ошибка при запросе к Unsplash API: {response.status}"
+                    )
                     return None
     except Exception as e:
         logging.error(f"Ошибка при получении изображения: {e}")
