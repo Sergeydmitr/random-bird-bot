@@ -7,6 +7,8 @@ services:
     env_file:
       - .env
     restart: unless-stopped
+    depends_on:
+      - mongo
 
   mongo:
     image: mirror.gcr.io/mongo
@@ -19,3 +21,4 @@ services:
       - MONGO_INITDB_DATABASE=${MONGO_DB_NAME}
     volumes:
       - ./data:/data/db
+    user: "1000:1000"

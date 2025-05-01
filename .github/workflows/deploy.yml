@@ -33,10 +33,6 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
           set -e
           cd /home/deploy/app
-          if [ ! -d "data" ]; then
-            mkdir data
-          fi
-          chown -R deploy:docker data
           docker-compose pull
           docker-compose up -d --build
           EOF
